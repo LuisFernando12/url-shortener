@@ -38,7 +38,7 @@ export default class UserService {
         if(!! user){
             return user;
         }
-        throw new Error('User not found');
+        throw new Error('Invalid email or password');
     }
     async update(id: number, body: Partial<User>) : Promise<string> {
         const user = await this.userRepository.update(id, body);
