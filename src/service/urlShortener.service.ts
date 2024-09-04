@@ -15,14 +15,14 @@ export default class UrlShortnerService {
 
         if (existingUrl.status < 400) {
             const hash = this.generateHashUrl();
-            const newUrl = await this.urlRepository.create({longUrl: longUrl, hash:hash});
+            const shortenedUrl = `${host}/${hash}`;
+            const newUrl = await this.urlRepository.create({longUrl: longUrl, hash:hash, shortenedUrl: shortenedUrl});
             if(!!newUrl){
-                return host+"/"+hash
+                return newUrl.shortenedUrl;
             }
             throw new Error('Failed to create short URL');
         }
         throw new Error('Failed to fetch long URL');
-
     }
 
     async findById(id: number): Promise<Url> {
@@ -44,9 +44,15 @@ export default class UrlShortnerService {
         
         const url = await this.urlRepository.update(id, longUrl);       
         if(url.affected === 0){
+            console.log(url);
+            
             throw new Error('Failed to update short URL');
         }
-        return "ok";
+        const shortUrl = await this.urlRepository.findById(id);
+        if(!!shortUrl){
+          return shortUrl.shortenedUrl;
+        }
+        throw new Error('Failed to find updated short URL');
     }
     async delete(id: number): Promise<string> {
         const urlDeleted = await this.urlRepository.delete(id);

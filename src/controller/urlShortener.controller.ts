@@ -7,7 +7,7 @@ export default class UrlShortnerController {
             const longUrl = req.body.longUrl;
             const host  = `${req.protocol}://${req.headers.host}`;
             const result = await this.urlShortenerService.createShortUrl(longUrl, host);
-            res.json(result);
+            res.json({shortenedURL:result});
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -16,8 +16,8 @@ export default class UrlShortnerController {
     async findById(req: Request, res: Response) :Promise<void> {
         try {
             const id = Number(req.params.id);
-            const url = await this.urlShortenerService.findById(id);
-            res.json(url);
+            const result = await this.urlShortenerService.findById(id);
+            res.json(result);
         } catch (error) {
             res.status(404).json({ error: error.message });
         }
@@ -26,8 +26,8 @@ export default class UrlShortnerController {
     async findByUserId(req: Request, res: Response):Promise<void> {
         try {
             const userId = Number(req.params.userId);
-            const urls = await this.urlShortenerService.findByUserId(userId);
-            res.json(urls);
+            const result = await this.urlShortenerService.findByUserId(userId);
+            res.json(result);
         } catch (error) {
             res.status(404).json({ error: error.message });
         }
@@ -39,8 +39,8 @@ export default class UrlShortnerController {
             if(!longUrl){
                 throw new Error('Long URL is required');
             }
-            const url  = await this.urlShortenerService.update(id, longUrl)
-            res.json(url);
+            const result  = await this.urlShortenerService.update(id, longUrl)
+            res.json({shortenedURL:result});
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -50,7 +50,7 @@ export default class UrlShortnerController {
         try{
             const id = Number(req.params.id);
             const urlDeleted = await this.urlShortenerService.delete(id);
-            res.json(urlDeleted)
+            res.json({message: urlDeleted})
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

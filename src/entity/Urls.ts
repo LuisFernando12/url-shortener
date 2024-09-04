@@ -14,11 +14,14 @@ export class Url {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({type: "varchar"})
+  @Column({type: "varchar", nullable: false})
   longUrl: string;
 
-  @Column({ unique: true, type: "varchar" })
+  @Column({ unique: true, type: "varchar", nullable: false })
   hash: string;
+  
+  @Column({ unique: true, type: "varchar", nullable: false })
+  shortenedUrl: string;
 
   @CreateDateColumn({type: "timestamp" })
   createdAt: Date;
