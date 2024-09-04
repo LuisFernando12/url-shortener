@@ -12,14 +12,14 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({type: "varchar"})
+  @Column({type: "varchar", nullable: false})
   name: string;
 
-  @Column({type: "varchar"})
+  @Column({unique: true, type: "varchar", nullable: false})
   email: string;
 
-  @Column({type: "varchar"})
-  password: number;
+  @Column({type: "varchar", nullable: false})
+  password: string;
 
   @CreateDateColumn()
   createdAt: Date;
