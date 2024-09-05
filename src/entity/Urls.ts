@@ -31,7 +31,10 @@ export class Url {
 
   @DeleteDateColumn()
   deletedAt: Date;
+  
+  @Column({type: "int", default: 0})
+  totalClicks: number;
 
   @ManyToOne(() => User, (user) => user.urls, { nullable: true })
-  user: User;
+  user?: User;
 }

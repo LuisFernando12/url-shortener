@@ -4,7 +4,6 @@ import UrlRepository from "../repository/url.repository";
 import { Url } from "../entity/Urls";
 import { UrlShortenerDTO } from "../dto/ulrShortener.dto";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto";
-//TODO: Adicionar countador de clicks
 export default class UrlShortnerService {
   constructor(private readonly urlRepository: UrlRepository) {}
   private generateHashUrl() {
@@ -53,8 +52,6 @@ export default class UrlShortnerService {
   async update(id: number, userId: number, longUrl: string): Promise<string> {
     const url = await this.urlRepository.update(id, userId, longUrl);
     if (url.affected === 0) {
-      console.log(url);
-
       throw new Error("Failed to update short URL");
     }
     const shortUrl = await this.urlRepository.findById(id, userId);
@@ -72,10 +69,10 @@ export default class UrlShortnerService {
   }
   async redirectToLongUrl(hash: string) {
     const url = await this.urlRepository.findByHash(hash);
-
     if (!url) {
       throw new Error("Short URL not found");
     }
+    await this.urlRepository.incrementClicks(url.id);
     return url.longUrl;
   }
 }

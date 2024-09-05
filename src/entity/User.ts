@@ -23,6 +23,6 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date;
-  @OneToMany(() => Url, url => url.userId )
-  urls: Url;
+  @OneToMany(() => Url, url => url.user )
+  urls: Url[];
 }
