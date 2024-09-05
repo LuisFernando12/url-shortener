@@ -14,8 +14,8 @@ Para rodar o projeto, siga os passos abaixo:
 1. **Clone o repositório:**
 
     ```bash
-    git clone <URL_DO_REPOSITÓRIO>
-    cd <NOME_DO_REPOSITÓRIO>
+    git clone https://github.com/LuisFernando12/url-shortener.git
+    cd url-shortener
     ```
 
 2. **Renomeie o arquivo `.env.template` para `.env`:**
