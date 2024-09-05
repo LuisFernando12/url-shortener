@@ -52,8 +52,6 @@ export default class UrlShortnerService {
   async update(id: number, userId: number, longUrl: string): Promise<string> {
     const url = await this.urlRepository.update(id, userId, longUrl);
     if (url.affected === 0) {
-      console.log(url);
-
       throw new Error("Failed to update short URL");
     }
     const shortUrl = await this.urlRepository.findById(id, userId);

@@ -15,7 +15,7 @@ export default class UrlShortnerController {
     };
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1];
-      const tokenDecoded = this.JwtDecoded(token);
+      const tokenDecoded = this.JwtDecoded(token);     
       body.userId = Number(tokenDecoded.sub);
     }
     try {

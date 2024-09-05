@@ -5,8 +5,15 @@ import { UrlShortenerDTO } from "../dto/ulrShortener.dto";
 export default class UrlRepository {
   constructor(private repository: Repository<Url>) {}
 
-  async create(body: UrlShortenerDTO): Promise<Url> {
-    return await this.repository.save(body);
+  async create(body: UrlShortenerDTO): Promise<Url> {    
+    const newUrl = this.repository.create({
+      longUrl: body.longUrl,
+      hash: body.hash,
+      shortenedUrl: body.shortenedUrl,
+      user: body.userId ? { id: body.userId } : null, 
+  });
+      
+    return await this.repository.save(newUrl);
   }
   async findById(id: number, userId: number): Promise<Url> {
     return await this.repository.findOneBy( { user: {id: userId}, id: id});
