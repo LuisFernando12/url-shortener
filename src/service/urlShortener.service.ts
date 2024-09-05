@@ -4,7 +4,6 @@ import UrlRepository from "../repository/url.repository";
 import { Url } from "../entity/Urls";
 import { UrlShortenerDTO } from "../dto/ulrShortener.dto";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto";
-//TODO: Adicionar countador de clicks
 export default class UrlShortnerService {
   constructor(private readonly urlRepository: UrlRepository) {}
   private generateHashUrl() {
