@@ -12,4 +12,4 @@ app.use(json());
 app.use(route);
 
 setupSwagger(app)
-app.listen(3000, () => {console.log('Server runing')})
+app.listen(process.env.PORT, () => {console.log('Server runing')})

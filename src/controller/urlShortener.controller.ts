@@ -127,7 +127,7 @@ export default class UrlShortnerController {
         id,
         Number(userId)
       );
-      res.json({ message: urlDeleted });
+      res.status(204).json();
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
