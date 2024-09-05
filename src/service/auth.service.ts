@@ -23,6 +23,7 @@ export default class AuthService {
       throw new Error("Invalid email or password");
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    
     if (!isPasswordValid) {
       throw new Error("Invalid email or password");
     }
@@ -33,8 +34,11 @@ export default class AuthService {
       iat: Math.floor(Date.now() / 1000),
       exp: expireIn,
     };
-
+    
     const jwt = this.tokenService.generateJWT(payload);
+    if(!jwt){
+      throw new Error("Unhatorized");
+    }
     return {
       access_token: jwt,
       expireIn

@@ -1,0 +1,439 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "URL Shortener API",
+      "version": "1.0.0",
+      "description": "API para encurtamento de URLs e gerenciamento de usuários."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Servidor local"
+      }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security":[
+        {
+            "bearerAuth":[]
+        }
+    ],
+    "paths": {
+      "/url-shortener": {
+        "post": {
+          "summary": "Cria uma URL encurtada",
+          "tags": ["URL Shortener"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "longUrl": {
+                      "type": "string",
+                      "example": "https://www.example.com"
+                    }
+                  },
+                  "required": ["longUrl"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "URL encurtada criada com sucesso",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "shortenedURL": {
+                        "type": "string",
+                        "example": "http://localhost:3000/abc123"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/url-shortener/{id}": {
+        "get": {
+          "summary": "Obtém uma URL encurtada pelo ID",
+          "tags": ["URL Shortener"],
+          "security":[
+            {
+                "bearerAuth":[]
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "URL encurtada encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "longUrl": {
+                        "type": "string"
+                      },
+                      "shortUrl": {
+                        "type": "string"
+                      },
+                      "hash": {
+                        "type": "string"
+                      },
+                      "shortenedUrl": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                      },
+                      "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                      },
+                      "deletedAt": {
+                          "type": "string" ,
+                          "format": "date-time"
+                      },
+                      "totalClicks": {
+                          "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "URL não encontrada"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualiza uma URL encurtada pelo ID",
+          "tags": ["URL Shortener"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "longUrl": {
+                      "type": "string",
+                      "example": "https://www.example.com"
+                    }
+                  },
+                  "required": ["longUrl"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "shortenedURL": {
+                        "type": "string",
+                        "example": "http://localhost:3000/abc123"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "URL não encontrada"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Deleta uma URL encurtada pelo ID",
+          "tags": ["URL Shortener"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "URL deletada com sucesso"
+            },
+            "404": {
+              "description": "URL não encontrada"
+            }
+          }
+        }
+      },
+      "/user/{id}/url-shortener": {
+        "get": {
+          "summary": "Obtém URLs encurtadas de um usuário pelo ID",
+          "tags": ["URL Shortener"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de URLs encurtadas do usuário",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "longUrl": {
+                        "type": "string"
+                      },
+                      "shortUrl": {
+                        "type": "string"
+                      },
+                      "hash": {
+                        "type": "string"
+                      },
+                      "shortenedUrl": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                      },
+                      "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                      },
+                      "totalClicks": {
+                          "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user": {
+        "post": {
+          "summary": "Cria um novo usuário",
+          "tags": ["User"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["name", "email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Usuário criado com sucesso"
+            }
+          }
+        }
+      },
+      "/user/{id}": {
+        "get": {
+          "summary": "Obtém um usuário pelo ID",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Usuário encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualiza um usuário pelo ID",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuário atualizado com sucesso"
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Deleta um usuário pelo ID",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Usuário deletado com sucesso"
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "summary": "Autentica um usuário",
+          "tags": ["Auth"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuário autenticado com sucesso"
+            },
+            "401": {
+              "description": "Credenciais inválidas"
+            }
+          }
+        }
+      }
+    }
+  }
+  

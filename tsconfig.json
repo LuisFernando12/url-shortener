@@ -6,6 +6,7 @@
     "noEmitOnError": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*", "./server.ts"]
 }
