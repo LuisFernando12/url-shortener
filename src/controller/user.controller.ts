@@ -18,6 +18,10 @@ export default class UserController {
       const user = await this.userService.createUser(body);
       res.status(201).json(user);
     } catch (error) {
+      if(Number(error.code) === 23505 ){
+        res.status(409).json({ error: 'Conflict' });
+        return;
+      }
       res.status(500).json({ error: error.message });
     }
   }

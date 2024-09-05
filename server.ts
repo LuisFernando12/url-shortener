@@ -2,6 +2,7 @@ import express, { json } from 'express';
 import route from './src/routes.js';
 import "reflect-metadata";
 import { AppDataSource } from './src/config/data-source.js';
+import { setupSwagger } from './src/config/swagger.js';
 
 const app  = express();
 AppDataSource.initialize().then(async () => {
@@ -9,4 +10,6 @@ AppDataSource.initialize().then(async () => {
 }).catch(error => console.log(error))
 app.use(json());
 app.use(route);
+
+setupSwagger(app)
 app.listen(3000, () => {console.log('Server runing')})

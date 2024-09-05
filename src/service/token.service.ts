@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import sign from "jwt-encode";
+import  "dotenv/config";
 interface JWTPayload {
     sub: number;
     name: string;
@@ -16,9 +17,13 @@ export default class TokenService {
       return null;
     }
   }
-  generateJWT(payload: JWTPayload): string {
-    const jwt = sign(payload, process.env.SECRETE);
-    return jwt;
+  generateJWT(payload: JWTPayload): string | null{    
+    try {
+      const jwt = sign(payload, process.env.SECRET);
+      return jwt;
+    } catch (error) {
+      return null;
+    }
   }
 
   tokenVerify(token: string): boolean {

@@ -9,7 +9,6 @@ import UserService from "./service/user.service.js";
 import AuthService from "./service/auth.service.js";
 import AuthController from "./controller/auth.controller.js";
 import TokenService from "./service/token.service.js";
-
 const route = Router();
 const tokenService = new TokenService()
 const urlService = new UrlRepository(AppDataSource.getRepository('Url'));
@@ -37,4 +36,5 @@ route.delete('/user/:id', (req: Request, res: Response) => userController.delete
 route.post('/auth/login', (req:Request, res:Response) => authController.login(req, res));
 
 route.get('/:hash',  (req: Request, res: Response) => urlShortenerController.redirectToLongUrl(req, res));
+
 export default route;
