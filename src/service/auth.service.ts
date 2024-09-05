@@ -1,20 +1,20 @@
 import UserService from "./user.service";
 import * as bcrypt from "bcrypt";
-import sign from "jwt-encode";
+import TokenService from "./token.service";
 type JWTPayload = {
   sub: number;
   name: string;
   iat: number;
+  exp: number;
 };
 export default class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private  readonly tokenService: TokenService
+  ) {}
 
-  private generateJWT(payload: JWTPayload): string {
-    const jwt = sign(payload, process.env.SECRETE);
-    return jwt;
-  }
   private generateExpireIn(): number {
-    const expireIn = Math.floor(Date.now()/ 1000 + 60);
+    const expireIn = Math.floor(Date.now()/ 1000 + (20 * 60));
     return expireIn;
   }
   async login(email: string, password: string) {
@@ -26,15 +26,18 @@ export default class AuthService {
     if (!isPasswordValid) {
       throw new Error("Invalid email or password");
     }
+    const expireIn = this.generateExpireIn();
     const payload: JWTPayload = {
       sub: user.id,
       name: user.name,
       iat: Math.floor(Date.now() / 1000),
+      exp: expireIn,
     };
 
-    const jwt = this.generateJWT(payload);
+    const jwt = this.tokenService.generateJWT(payload);
     return {
       access_token: jwt,
+      expireIn
     };
   }
 }
