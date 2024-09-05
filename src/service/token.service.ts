@@ -1,6 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import sign from "jwt-encode";
 import  "dotenv/config";
+import UserService from "./user.service";
+import UserRepository from "../repository/user.repository";
+import { AppDataSource } from "../config/data-source";
 interface JWTPayload {
     sub: number;
     name: string;
@@ -8,7 +11,11 @@ interface JWTPayload {
     exp: number;
   };
 export default class TokenService {
-  constructor() {}
+  private readonly userService: UserService
+  constructor(
+  ) {
+    this.userService = new UserService(new UserRepository(AppDataSource.getRepository('User')));
+  }
   tokenDecode(token: string): JWTPayload | null {
     try {
       const tokenDecoded: JWTPayload = jwtDecode(token);
@@ -26,9 +33,15 @@ export default class TokenService {
     }
   }
 
-  tokenVerify(token: string): boolean {
+  async tokenVerify(token: string): Promise<boolean> {
     const tokenDecoded = this.tokenDecode(token);
     if (!tokenDecoded) {
+      return false;
+    }
+    const hasUser = await this.userService.getUserById(Number(tokenDecoded.sub));
+    if (!hasUser) {
+      console.log('aqui token');
+      
       return false;
     }
     const expireIn = tokenDecoded.exp;

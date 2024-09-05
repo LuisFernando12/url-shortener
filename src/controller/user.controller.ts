@@ -34,16 +34,21 @@ export default class UserController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
       }  
-
       const id = Number(req.params.id);
       const user = await this.userService.getUserById(id);
+      if(!user){
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
       res.json(user);
     } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -58,10 +63,12 @@ export default class UserController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }  
+      } 
       
       const id = Number(req.params.id);
       const user = req.body as Partial<User>;
@@ -78,6 +85,14 @@ export default class UserController {
       return;
     }
     try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      
+      if (!tokenIsValid || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      } 
       const id = Number(req.params.id);
       await this.userService.delete(id);
       res.status(204).json();

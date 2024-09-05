@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { User } from "../entity/User";
 import { UserDTO } from "../dto/user.dto";
 
@@ -18,9 +18,9 @@ export default class UserRepository {
     return await this.repository.findOne({ where: { email } });
   }
   async update(id: number, user: Partial<User>): Promise<any> {
-    return await this.repository.update(id, user);
+    return await this.repository.update({id, deletedAt: IsNull()}, user);
   }
   async delete(id: number): Promise<any> {
-    return await this.repository.delete(id);
+    return await this.repository.update(id, { deletedAt: new Date() });
   }
 }

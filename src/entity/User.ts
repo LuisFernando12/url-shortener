@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
+  DeleteDateColumn,
 } from "typeorm";
 import { Url } from "./Urls";
 
@@ -23,6 +24,10 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
+
   @OneToMany(() => Url, url => url.user )
   urls: Url[];
 }
