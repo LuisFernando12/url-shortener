@@ -72,10 +72,10 @@ export default class UrlShortnerService {
   }
   async redirectToLongUrl(hash: string) {
     const url = await this.urlRepository.findByHash(hash);
-
     if (!url) {
       throw new Error("Short URL not found");
     }
+    await this.urlRepository.incrementClicks(url.id);
     return url.longUrl;
   }
 }

@@ -26,4 +26,8 @@ export default class UrlRepository {
   async delete(id: number, userId: number): Promise<any> {  
     return await this.repository.update( {id, user: { id: userId}, deletedAt: IsNull()}, { deletedAt: new Date() });
   }
+
+  async incrementClicks(id: number): Promise<any> {
+    return await this.repository.increment({ id: id },'totalClicks', 1)
+  }
 }

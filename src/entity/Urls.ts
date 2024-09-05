@@ -34,4 +34,6 @@ export class Url {
 
   @ManyToOne(() => User, (user) => user.urls, { nullable: true })
   user: User;
+  @Column({type: "int", default: 0})
+  totalClicks: number;
 }
