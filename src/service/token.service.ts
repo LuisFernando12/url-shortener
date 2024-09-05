@@ -39,9 +39,7 @@ export default class TokenService {
       return false;
     }
     const hasUser = await this.userService.getUserById(Number(tokenDecoded.sub));
-    if (!hasUser) {
-      console.log('aqui token');
-      
+    if (!hasUser) {     
       return false;
     }
     const expireIn = tokenDecoded.exp;
