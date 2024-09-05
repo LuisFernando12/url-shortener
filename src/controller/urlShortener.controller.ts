@@ -2,12 +2,12 @@ import { jwtDecode } from "jwt-decode";
 import UrlShortnerService from "../service/urlShortener.service.js";
 import { Request, Response } from "express";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto.js";
+import TokenService from "../service/token.service.js";
 export default class UrlShortnerController {
-  constructor(private readonly urlShortenerService: UrlShortnerService) {}
-  private JwtDecoded(token: string) {
-    const tokenDecoded = jwtDecode(token);
-    return tokenDecoded;
-  }
+  constructor(
+    private readonly urlShortenerService: UrlShortnerService,
+    private readonly tokenService: TokenService
+  ) {}
   async createShortUrl(req: Request, res: Response): Promise<void> {
     const body: CreateShortUrlDTO = {
       longUrl: "",
@@ -15,7 +15,11 @@ export default class UrlShortnerController {
     };
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1];
-      const tokenDecoded = this.JwtDecoded(token);     
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }
       body.userId = Number(tokenDecoded.sub);
     }
     try {
@@ -35,9 +39,17 @@ export default class UrlShortnerController {
     }
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const userId = this.JwtDecoded(token).sub;
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }
+      const userId = Number(tokenDecoded.sub);
       const id = Number(req.params.id);
-      const result = await this.urlShortenerService.findById(id, Number(userId));
+      const result = await this.urlShortenerService.findById(
+        id,
+        Number(userId)
+      );
       res.json(result);
     } catch (error) {
       res.status(404).json({ error: error.message });
@@ -50,6 +62,12 @@ export default class UrlShortnerController {
       return;
     }
     try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }
       const userId = Number(req.params.id);
       const result = await this.urlShortenerService.findByUserId(userId);
       res.json(result);
@@ -64,13 +82,22 @@ export default class UrlShortnerController {
     }
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const userId = this.JwtDecoded(token).sub;
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }
+      const userId = tokenDecoded.sub;
       const id = Number(req.params.id);
       const { longUrl } = req.body;
       if (!longUrl) {
         throw new Error("Long URL is required");
       }
-      const result = await this.urlShortenerService.update(id, Number(userId), longUrl);
+      const result = await this.urlShortenerService.update(
+        id,
+        Number(userId),
+        longUrl
+      );
       res.json({ shortenedURL: result });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -83,10 +110,18 @@ export default class UrlShortnerController {
       return;
     }
     try {
-        const token = req.headers.authorization.split(" ")[1];
-        const userId = this.JwtDecoded(token).sub;
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }
+      const userId = tokenDecoded.sub;
       const id = Number(req.params.id);
-      const urlDeleted = await this.urlShortenerService.delete(id, Number(userId));
+      const urlDeleted = await this.urlShortenerService.delete(
+        id,
+        Number(userId)
+      );
       res.json({ message: urlDeleted });
     } catch (error) {
       res.status(500).json({ error: error.message });

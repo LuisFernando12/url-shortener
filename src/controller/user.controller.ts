@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import UserService from "../service/user.service";
 import { User } from "../entity/User";
+import TokenService from "../service/token.service";
 
 export default class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly tokenService:TokenService
+  ) {}
 
   async createUser(req: Request, res: Response): Promise<void> {
     if (!req.body) {
@@ -24,6 +28,13 @@ export default class UserController {
       return;
     }
     try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }  
+
       const id = Number(req.params.id);
       const user = await this.userService.getUserById(id);
       res.json(user);
@@ -41,6 +52,13 @@ export default class UserController {
       res.status(400).json({ error: "No user data provided" });
     }
     try {
+      const token = req.headers.authorization.split(" ")[1];
+      const tokenDecoded = this.tokenService.tokenDecode(token);
+      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+        res.status(401).json({ error: "Invalid Token" });
+        return;
+      }  
+      
       const id = Number(req.params.id);
       const user = req.body as Partial<User>;
       const result = await this.userService.update(id, user);
