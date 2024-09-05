@@ -36,11 +36,12 @@ Para rodar o projeto, siga os passos abaixo:
 3. **Configure as variáveis de ambiente no arquivo `.env`:**
 
     ```dotenv
-    PORT=                # Porta na qual o projeto será executado
     USER_DB=''               # Usuário do banco de dados (PostgreSQL)
     PASSWORD=''              # Senha do banco de dados
     DB_NAME=''               # Nome do banco de dados
     HOST=''                  # Endereço do banco de dados (ex: localhost)
+    DB_PORT                  #  Porta que banco de dados  está rodando (ex: 5432)
+    PORT=                    # Porta na qual o projeto será executado
     SECRET=''                # Secret para geração do JWT
     ```
 
