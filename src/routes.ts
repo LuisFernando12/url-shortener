@@ -10,16 +10,18 @@ import AuthService from "./service/auth.service.js";
 import AuthController from "./controller/auth.controller.js";
 import TokenService from "./service/token.service.js";
 const route = Router();
-const tokenService = new TokenService()
+
 const urlService = new UrlRepository(AppDataSource.getRepository('Url'));
-const urlShortenerService = new UrlShortnerService(urlService);
-const urlShortenerController = new UrlShortenerController(urlShortenerService, tokenService);
-
-
 const userRepository = new UserRepository(AppDataSource.getRepository('User'));
+
 const userService = new UserService(userRepository)
-const userController = new UserController(userService, tokenService);
+const urlShortenerService = new UrlShortnerService(urlService);
+
+const tokenService = new TokenService(userService)
 const authService = new AuthService(userService, tokenService);
+
+const urlShortenerController = new UrlShortenerController(urlShortenerService, tokenService);
+const userController = new UserController(userService, tokenService);
 const authController = new AuthController(authService)
 
 route.post('/url-shortener',  (req: Request, res: Response) => urlShortenerController.createShortUrl(req, res));

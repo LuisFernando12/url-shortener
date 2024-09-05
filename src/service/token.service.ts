@@ -11,11 +11,9 @@ interface JWTPayload {
     exp: number;
   };
 export default class TokenService {
-  private readonly userService: UserService
   constructor(
-  ) {
-    this.userService = new UserService(new UserRepository(AppDataSource.getRepository('User')));
-  }
+    private readonly userService: UserService
+  ) {}
   tokenDecode(token: string): JWTPayload | null {
     try {
       const tokenDecoded: JWTPayload = jwtDecode(token);
