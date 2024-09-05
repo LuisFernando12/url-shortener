@@ -24,7 +24,7 @@ const authController = new AuthController(authService)
 
 route.post('/url-shortener',  (req: Request, res: Response) => urlShortenerController.createShortUrl(req, res));
 route.get('/url-shortener/:id',  (req: Request, res: Response) => urlShortenerController.findById(req, res));
-route.get('/url-shortener/user/:id',  (req: Request, res: Response) => urlShortenerController.findByUserId(req, res));
+route.get('/user/:id/url-shortener',  (req: Request, res: Response) => urlShortenerController.findByUserId(req, res));
 route.put('/url-shortener/:id',  (req: Request, res: Response) => urlShortenerController.update(req, res));
 route.delete('/url-shortener/:id',  (req: Request, res: Response) => urlShortenerController.delete(req, res));
 

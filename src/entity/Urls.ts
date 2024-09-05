@@ -33,5 +33,5 @@ export class Url {
   deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.urls, { nullable: true })
-  userId: number;
+  user: User;
 }
