@@ -16,10 +16,11 @@ export default class UrlShortnerController {
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }
+      } 
       body.userId = Number(tokenDecoded.sub);
     }
     try {
@@ -40,10 +41,11 @@ export default class UrlShortnerController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }
+      } 
       const userId = Number(tokenDecoded.sub);
       const id = Number(req.params.id);
       const result = await this.urlShortenerService.findById(
@@ -64,10 +66,11 @@ export default class UrlShortnerController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }
+      } 
       const userId = Number(req.params.id);
       const result = await this.urlShortenerService.findByUserId(userId);
       res.json(result);
@@ -83,10 +86,11 @@ export default class UrlShortnerController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }
+      } 
       const userId = tokenDecoded.sub;
       const id = Number(req.params.id);
       const { longUrl } = req.body;
@@ -112,10 +116,11 @@ export default class UrlShortnerController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const tokenDecoded = this.tokenService.tokenDecode(token);
-      if (!this.tokenService.tokenVerify(token) || !tokenDecoded) {
+      const tokenIsValid = await this.tokenService.tokenVerify(token);
+      if (!tokenIsValid || !tokenDecoded) {
         res.status(401).json({ error: "Invalid Token" });
         return;
-      }
+      } 
       const userId = tokenDecoded.sub;
       const id = Number(req.params.id);
       const urlDeleted = await this.urlShortenerService.delete(

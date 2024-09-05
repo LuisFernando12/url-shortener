@@ -26,12 +26,12 @@ export default class UserService {
         }
         throw new Error('Failed to create user');
     }
-    async getUserById(id: number): Promise<User> {
+    async getUserById(id: number): Promise<User | null> {
         const user  = await this.userRepository.findById(id);
         if(!! user){
             return user;
         }
-        throw new Error('User not found');
+        return null;
     }
     async getUserByEmail(email: string): Promise<User> {
         const user  = await this.userRepository.findByEmail(email);
