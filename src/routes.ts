@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import UrlShortenerController from "./controller/urlShortener.controller.js";
-import UrlShortnerService from "./service/urlShortener.service.js";
+import UrlShortenerService from "./service/urlShortener.service.js";
 import UrlRepository from "./repository/url.repository.js";
 import { AppDataSource } from "./config/data-source.js";
 import UserController from "./controller/user.controller.js";
@@ -15,7 +15,7 @@ const urlService = new UrlRepository(AppDataSource.getRepository('Url'));
 const userRepository = new UserRepository(AppDataSource.getRepository('User'));
 
 const userService = new UserService(userRepository)
-const urlShortenerService = new UrlShortnerService(urlService);
+const urlShortenerService = new UrlShortenerService(urlService);
 
 const tokenService = new TokenService(userService)
 const authService = new AuthService(userService, tokenService);

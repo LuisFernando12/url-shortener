@@ -5,9 +5,9 @@ import { Url } from "../entity/Urls";
 import { UrlShortenerDTO } from "../dto/ulrShortener.dto";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto";
 import { logger } from "../util/logger";
-export default class UrlShortnerService {
+export default class UrlShortenerService {
   constructor(private readonly urlRepository: UrlRepository) {
-    logger.info("UrlShortnerService started");
+    logger.info("UrlShortenerService started");
   }
   private generateHashUrl() {
     logger.info("GenerateHashUrl called")
@@ -17,7 +17,7 @@ export default class UrlShortnerService {
   }
 
   async createShortUrl({ longUrl, host, userId }: CreateShortUrlDTO) {
-    logger.info("UrlShortnerService: CreateShortUrl called");
+    logger.info("UrlShortenerService: CreateShortUrl called");
     logger.info("Check if url exists")
     const existingUrl = await axios.get(longUrl);
     if (existingUrl.status < 400) {
@@ -47,7 +47,7 @@ export default class UrlShortnerService {
   }
 
   async findById(id: number, userId: number): Promise<Url> {
-    logger.info("FindById called")
+    logger.info("UrlShortenerService: FindById called")
     logger.info("FindById: call urlRepository.findById");
     const url = await this.urlRepository.findById(id, userId);
     if (!url) {
@@ -59,14 +59,14 @@ export default class UrlShortnerService {
   }
 
   async findByUserId(userId: number): Promise<Url[]> {
-    logger.info("UrlShortnerService: FindByUserId called")
+    logger.info("UrlShortenerService: FindByUserId called")
     logger.info("FindByUserId: call urlRepository.findByUserId")
     const urls = await this.urlRepository.findByUserId(userId);
     logger.info(`Return ${urls.length} urls`);
     return urls;
   }
   async update(id: number, userId: number, longUrl: string): Promise<string> {
-    logger.info("UrlShortnerService: Update called");
+    logger.info("UrlShortenerService: Update called");
     logger.info("Update: call urlRepository.update");
     const url = await this.urlRepository.update(id, userId, longUrl);
     if (url.affected === 0) {
@@ -83,7 +83,7 @@ export default class UrlShortnerService {
     throw new Error("Failed to find updated short URL");
   }
   async delete(id: number, userId: number): Promise<void> {
-    logger.info("UrlShortnerService: Delete called");
+    logger.info("UrlShortenerService: Delete called");
     logger.info("Delete: call urlRepository.delete");
     const urlDeleted = await this.urlRepository.delete(id, userId);
     if (urlDeleted.affected === 0) {
@@ -93,7 +93,7 @@ export default class UrlShortnerService {
     return;
   }
   async redirectToLongUrl(hash: string) {
-    logger.info("UrlShortnerService: RedirectToLongUrl called")
+    logger.info("UrlShortenerService: RedirectToLongUrl called")
     logger.info("RedirectToLongUrl: call urlRepository.findByHash");
     const url = await this.urlRepository.findByHash(hash);
     if (!url) {

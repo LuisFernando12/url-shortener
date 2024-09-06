@@ -1,12 +1,12 @@
 import { jwtDecode } from "jwt-decode";
-import UrlShortnerService from "../service/urlShortener.service.js";
+import UrlShortenerService from "../service/urlShortener.service.js";
 import { Request, Response } from "express";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto.js";
 import TokenService from "../service/token.service.js";
 import { logger } from "../util/logger.js";
 export default class UrlShortnerController {
   constructor(
-    private readonly urlShortenerService: UrlShortnerService,
+    private readonly urlShortenerService: UrlShortenerService,
     private readonly tokenService: TokenService
   ){
     logger.info("UrlShortenerController started");
