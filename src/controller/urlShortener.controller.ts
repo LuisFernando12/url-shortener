@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { CreateShortUrlDTO } from "../dto/createShortUrl.dto.js";
 import TokenService from "../service/token.service.js";
 import { logger } from "../util/logger.js";
-export default class UrlShortnerController {
+export default class UrlShortenerController {
   constructor(
     private readonly urlShortenerService: UrlShortenerService,
     private readonly tokenService: TokenService
