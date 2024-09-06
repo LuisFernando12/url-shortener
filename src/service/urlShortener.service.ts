@@ -54,7 +54,7 @@ export default class UrlShortnerService {
       logger.error("Error: Short URL not found");
       throw new Error("Short URL not found");
     }
-    logger.info("Successfully return url founded")
+    logger.info("Successfully return url found")
     return url;
   }
 

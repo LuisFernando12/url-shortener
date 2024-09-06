@@ -59,7 +59,7 @@ export default class UserController {
         res.status(404).json({ error: 'User not found' });
         return;
       }
-      logger.info("User founded");
+      logger.info("User found");
       res.json(user);
     } catch (error) {
       logger.error(`Error at findUserById: ${JSON.stringify(error)}`);
