@@ -36,7 +36,7 @@ export default class UrlShortnerService {
       logger.info("CreateShortUrl: call urlRepository.create");
       const newUrl = await this.urlRepository.create(body);
       if (!!newUrl) {
-        logger.info("Successfuly return")
+        logger.info("Successfully return")
         return newUrl.shortenedUrl;
       }
       logger.error("Error: Failed to create short URL")
@@ -54,7 +54,7 @@ export default class UrlShortnerService {
       logger.error("Error: Short URL not found");
       throw new Error("Short URL not found");
     }
-    logger.info("Successfuly return url founded")
+    logger.info("Successfully return url founded")
     return url;
   }
 
@@ -76,7 +76,7 @@ export default class UrlShortnerService {
     logger.info("Update: call urlRepository.findById");
     const shortUrl = await this.urlRepository.findById(id, userId);
     if (!!shortUrl) {
-      logger.info("Successfuly return shortenedUrl");
+      logger.info("Successfully return shortenedUrl");
       return shortUrl.shortenedUrl;
     }
     logger.error("Error: failed to find updated short url")
