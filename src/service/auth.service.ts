@@ -24,7 +24,7 @@ export default class AuthService {
     return expireIn;
   }
   async login(email: string, password: string) {
-    logger.info("Login called");
+    logger.info("AuthService: Login called");
     logger.info("Login: call userService.login");
     const user = await this.userService.getUserByEmail(email);
     if (!user) {

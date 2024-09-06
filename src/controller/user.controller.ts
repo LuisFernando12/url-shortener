@@ -13,7 +13,7 @@ export default class UserController {
   }
 
   async createUser(req: Request, res: Response): Promise<void> {
-    logger.info("CreateUser called");
+    logger.info("UserController: CreateUser called");
     if (!req.body.name || !req.body.email || !req.body.password) {
       logger.error("Error: No user data provided");
       res.status(400).json({ error: "No user data provided" });
@@ -35,7 +35,7 @@ export default class UserController {
   }
 
   async findUserById(req: Request, res: Response): Promise<void> {
-    logger.info("FindUserById called");
+    logger.info("UserController: FindUserById called");
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });
@@ -68,15 +68,16 @@ export default class UserController {
   }
 
   async updateUser(req: Request, res: Response): Promise<void> {
-    logger.info("UpdateUser called");
+    logger.info("UserController: UpdateUser called");
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
-    if (!req.body.name || !req.body.email) {
+    if (!req.body.name && !req.body.email) {
       logger.error("Error: No user data provided");
       res.status(400).json({ error: "No user data provided" });
+      return;
     }
     if(req.body.password){
       logger.error("Error: Password should not be updated");
@@ -107,7 +108,7 @@ export default class UserController {
   }
 
   async deleteUser(req: Request, res: Response): Promise<void> {
-    logger.info("DeleteUser called");
+    logger.info("UserController: DeleteUser called");
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });

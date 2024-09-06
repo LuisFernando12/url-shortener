@@ -12,7 +12,7 @@ export default class UrlShortnerController {
     logger.info("UrlShortenerController started");
   }
   async createShortUrl(req: Request, res: Response): Promise<void> {
-    logger.info("CreateShortUrl called")
+    logger.info("UrlShortenerController: CreateShortUrl called")
     const body: CreateShortUrlDTO = {
       longUrl: "",
       host: "",
@@ -44,7 +44,7 @@ export default class UrlShortnerController {
   }
 
   async findById(req: Request, res: Response): Promise<void> {
-    logger.info("findById called");
+    logger.info("UrlShortenerController: findById called");
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });
@@ -75,7 +75,7 @@ export default class UrlShortnerController {
   }
 
   async findByUserId(req: Request, res: Response): Promise<void> {
-    logger.info("FindByUserId called: ")
+    logger.info("UrlShortenerController: FindByUserId called: ")
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });
@@ -101,7 +101,7 @@ export default class UrlShortnerController {
     }
   }
   async update(req: Request, res: Response): Promise<void> {
-    logger.info("Update called")
+    logger.info("UrlShortenerController: Update called")
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");
       res.status(401).json({ error: "Unauthorized" });
@@ -138,7 +138,7 @@ export default class UrlShortnerController {
   }
 
   async delete(req: Request, res: Response): Promise<void> {
-    logger.info("Delete called");
+    logger.info("UrlShortenerController: Delete called");
     if (!req.headers.authorization) {
       logger.error("Error: Authorization Error");;
       res.status(401).json({ error: "Unauthorized" });
@@ -168,7 +168,7 @@ export default class UrlShortnerController {
     }
   }
   async redirectToLongUrl(req: Request, res: Response) {
-    logger.info("RedirectToLongUrl called");
+    logger.info("UrlShortenerController: RedirectToLongUrl called");
     try {
       const hash = req.params.hash;
       logger.info("RedirectToLongUrl: call urlShortenerService.redirectToLongUrl");

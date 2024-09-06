@@ -21,7 +21,7 @@ export default class UserService {
         }
     }
     async createUser(user: UserDTO) : Promise<User> {
-        logger.info("CreateUser called");
+        logger.info("UserService: CreateUser called");
         logger.info("Call encryptPassword");
         const password = await this.encryptPassword(user.password);
         if(!password){
@@ -40,7 +40,7 @@ export default class UserService {
         throw new Error('Failed to create user');
     }
     async getUserById(id: number): Promise<User | null> {
-        logger.info("GetUserById called");
+        logger.info("UserService: GetUserById called");
         logger.info("GetUserById: call  userRepository.findById")
         const user  = await this.userRepository.findById(id);
         if(!! user){
@@ -51,7 +51,7 @@ export default class UserService {
         return null;
     }
     async getUserByEmail(email: string): Promise<User> {
-        logger.info("GetUserByEmail called");
+        logger.info("UserService: GetUserByEmail called");
         logger.info("CetUserByEmail: userRepository.findByemail");
         const user  = await this.userRepository.findByEmail(email);
         if(!! user){
@@ -62,7 +62,7 @@ export default class UserService {
         throw new Error('Invalid email or password');
     }
     async update(id: number, body: Partial<User>) : Promise<string> {
-        logger.info("Update called");
+        logger.info("UserService: Update called");
         logger.info("Updatte: call userRepository.update");
         const user = await this.userRepository.update(id, body);
         if(user.affected === 0){
@@ -73,7 +73,7 @@ export default class UserService {
         return "User updated successfully";
     }
     async delete(id: number): Promise<void> {
-        logger.info("Delete called");
+        logger.info("UserService: Delete called");
         logger.info("Delete: call userRepository.delete")
         const userDeleted = await this.userRepository.delete(id);
         if(userDeleted.affected === 0){

@@ -3,11 +3,12 @@ import AuthService from "../service/auth.service";
 import { logger } from "../util/logger";
 
 export default class AuthController{
-    constructor(private readonly authService: AuthService){}
+    constructor(private readonly authService: AuthService){
+        logger.info("AuthController: started");
+    }
     
     async login(req: Request, res: Response): Promise<void> {
-        logger.info("AuthController: started");
-        logger.info("Started method login ");
+        logger.info("AuthController: Login called");
         if(!req.body.email || !req.body.password){
             logger.error(`Error: no data provide`);
             res.status(400).json({ error: 'No data provided' });
